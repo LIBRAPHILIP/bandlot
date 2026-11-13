@@ -36,6 +36,8 @@ Rules and tests: `docs/CONSENSUS.md`, `tests/test_rules.py`.
 
 Studionet, chain 61999. RPC `https://studio.genlayer.com/api`. Explorer `https://explorer-studio.genlayer.com`.
 
+Live app: https://bandlot.vercel.app
+
 Live contract `0xfBC7386748Ea1176a3501d11d368430acde28cf6`. Deploy transaction `0xeb34178c7846a7898c95fcf85465597123fd835ee9e3f1d5bc2e3b1fb7bfe4dd`.
 
 The recorded clear is in `deployments/live-check.json`. DE-LU 2026-11-12, interval 0, print 224.90 EUR/MWh. Ask 0 at +100 bps is FILLED. Bid 0 from a second account, escrowed at +400 bps, is CLEARED. Pay `22714000000000000` wei, refund `675000000000000` wei.

@@ -31,7 +31,7 @@ The transaction rail waits for an accepted receipt, shows the votes the chain re
 | | |
 | --- | --- |
 | GitHub | https://github.com/LIBRAPHILIP/bandlot |
-| Live app | (set after the Vercel alias is assigned) |
+| Live app | https://bandlot.vercel.app |
 | Network | Studionet, chain 61999 |
 | Contract | `0xfBC7386748Ea1176a3501d11d368430acde28cf6` |
 | Deploy tx | `0xeb34178c7846a7898c95fcf85465597123fd835ee9e3f1d5bc2e3b1fb7bfe4dd` |

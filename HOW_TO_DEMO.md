@@ -1,6 +1,6 @@
 # How to demo Bandlot
 
-Network: Studionet, chain 61999. Use the contract address in `deployed.json`. Do not type a euro price into a transaction. The print has to come from `pin_print`.
+Network: Studionet, chain 61999. The live desk is https://bandlot.vercel.app. Use the contract address in `deployed.json`. Do not type a euro price into a transaction. The print has to come from `pin_print`.
 
 ## Click path
 
