@@ -1,0 +1,11 @@
+{
+  "primitive": "Bandlot",
+  "version": "1.0.0-bandlot",
+  "address": "0xfBC7386748Ea1176a3501d11d368430acde28cf6",
+  "chainId": 61999,
+  "network": "studionet",
+  "deployTx": "0xeb34178c7846a7898c95fcf85465597123fd835ee9e3f1d5bc2e3b1fb7bfe4dd",
+  "explorer": "https://explorer-studio.genlayer.com/address/0xfBC7386748Ea1176a3501d11d368430acde28cf6",
+  "deployedAt": "2026-11-13T03:39:05.627Z",
+  "deployer": "0xfe9eAeD7Cb41A1F0428fFC70DCc79e2389833f0F"
+}

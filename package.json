@@ -1,0 +1,23 @@
+{
+  "name": "bandlot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Bandlot clears indexed day-ahead lots on GenLayer. The print is fetched, the match is the cheapest ask, and GEN moves only on that clear.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4177",
+    "test": "node --test tests/rules.node.test.js",
+    "test:py": "python -m unittest tests.test_rules",
+    "deploy:studionet": "node scripts/deploy.mjs studionet",
+    "demo:studionet": "node scripts/demo-run.mjs"
+  },
+  "dependencies": {
+    "genlayer-js": "^1.1.8",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.7"
+  }
+}

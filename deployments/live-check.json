@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0-bandlot",
+  "address": "0xfBC7386748Ea1176a3501d11d368430acde28cf6",
+  "chainId": 61999,
+  "zone": "DE-LU",
+  "date": "2026-11-12",
+  "quarter": "0",
+  "printCents": "22490",
+  "count": "96",
+  "source": "https://api.energy-charts.info/price?bzn=DE-LU&start=2026-11-12&end=2026-11-12",
+  "askId": "0",
+  "bidId": "0",
+  "askStatus": "FILLED",
+  "bidStatus": "CLEARED",
+  "markupBps": "100",
+  "maxMarkupBps": "400",
+  "payWei": "22714000000000000",
+  "refundWei": "675000000000000",
+  "seller": "0xfe9eaed7cb41a1f0428ffc70dcc79e2389833f0f",
+  "buyer": "0x11d4a813118685560adfd45b57468c51af206091",
+  "txs": {
+    "pin": "0xd334aa3f1307e27085b4784da977475558ad9e5a2c409ae2813240cee7ad42e3",
+    "ask": "0x821f2cce97e94aeba09523e2c88f23dda7eb8540b0c222d10cb2fbf4f95ae6a5",
+    "bid": "0xfcc6d2176755e271b3722d00bd53dc6041359204aa02e03519ba7a5be44ef851",
+    "clear": "0x51fc882d9423d79507a9f9bf1defa1763346ee33a5b55c2b589b80b909715301"
+  },
+  "checkedAt": "2026-11-13T03:40:13.759Z"
+}

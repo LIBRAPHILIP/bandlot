@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bandlot — day-ahead lot book</title>
+    <meta
+      name="description"
+      content="Bandlot pins a day-ahead power print on GenLayer, matches the cheapest compatible ask, and settles GEN only on that match."
+    />
+    <meta name="theme-color" content="#10140f" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="vignette" aria-hidden="true"></div>
+    <header class="top">
+      <a class="mark" href="#floor">Bandlot</a>
+      <p class="mark-note">Marketplaces · dynamic price · matching</p>
+      <nav>
+        <a href="#floor">Print</a>
+        <a href="#desk">Book</a>
+        <a href="#rail">Transaction</a>
+        <a href="#rules">Rules</a>
+        <a id="githubLink" href="https://github.com/LIBRAPHILIP/bandlot">GitHub</a>
+      </nav>
+      <div class="session">
+        <label class="sr" for="networkSelect">Network</label>
+        <select id="networkSelect">
+          <option value="studionet">Studionet</option>
+          <option value="bradbury">Bradbury</option>
+          <option value="localnet">Localnet</option>
+        </select>
+        <button type="button" class="ghost" id="btnSeller">Seller desk</button>
+        <button type="button" class="ghost" id="btnBuyer">Buyer desk</button>
+        <button type="button" class="solid" id="btnWallet">Wallet</button>
+      </div>
+    </header>
+
+    <section class="hero" id="floor">
+      <canvas id="scope" aria-hidden="true"></canvas>
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="live-pip" id="healthPip"></span><span id="healthText">Checking Studionet</span></p>
+        <h1>The lot clears at the published print, or it does not clear.</h1>
+        <p class="lede">
+          A seller names a markup over the day-ahead price. A buyer escrows the most they will pay over that same print.
+          Validators fetch the series. The contract keeps the cheapest ask that fits, and only then moves GEN.
+        </p>
+        <dl class="facts">
+          <div><dt>Price</dt><dd>Day-ahead print, plus a markup</dd></div>
+          <div><dt>Match</dt><dd>Lowest markup, then earliest ask</dd></div>
+          <div><dt>Decides</dt><dd>No LLM. The URL is built by the contract.</dd></div>
+        </dl>
+      </div>
+      <div class="readout">
+        <p class="kicker" id="readoutKicker">DE-LU · 2026-11-12 · Q00</p>
+        <p class="figure"><span id="readoutFigure">—</span> <span id="readoutUnit">EUR/MWh</span></p>
+        <p class="sub" id="readoutSub">Empty grid until this delivery day is pinned.</p>
+      </div>
+      <div class="tape-wrap">
+        <div class="tape" id="tape" role="radiogroup" aria-label="Delivery intervals"></div>
+      </div>
+    </section>
+
+    <main>
+      <section class="panel" id="sessionPanel">
+        <div class="panel-head">
+          <h2>Desk</h2>
+          <p id="accountLine">Open a seller desk and a buyer desk. A bid cannot take an ask from the same account.</p>
+        </div>
+        <div class="contract-row">
+          <label class="grow">Contract
+            <input id="contractAddress" spellcheck="false" placeholder="0x Bandlot" />
+          </label>
+          <button type="button" class="ghost" id="btnBind">Bind</button>
+          <button type="button" class="ghost" id="btnDeploy">Deploy</button>
+          <button type="button" class="ghost" id="btnFaucet">Fund this account</button>
+          <a id="contractLink" class="text-link" href="" hidden>Explorer</a>
+        </div>
+        <p class="hint" id="metaLine">Meta loads after the address is bound.</p>
+      </section>
+
+      <section class="panel" id="desk">
+        <div class="panel-head">
+          <h2>Post against a pinned day</h2>
+          <p>
+            Source
+            <a id="sourceLink" href="https://api.energy-charts.info/price?bzn=DE-LU&start=2026-11-12&end=2026-11-12">api.energy-charts.info</a>.
+            The page does not send that response to the contract. Pin does.
+          </p>
+        </div>
+        <div class="market-row">
+          <label>Zone
+            <select id="zone">
+              <option>DE-LU</option>
+              <option>AT</option>
+              <option>BE</option>
+              <option>FR</option>
+              <option>NL</option>
+            </select>
+          </label>
+          <label>Delivery date
+            <input id="date" value="2026-11-12" spellcheck="false" />
+          </label>
+          <p class="slot-read">Interval <strong id="quarterLabel">Q00 · 00:00</strong></p>
+          <button type="button" class="solid" id="btnPin">Pin this print</button>
+        </div>
+        <p class="hint" id="selfHint">Asks and bids on the same interval match only across two accounts.</p>
+        <div class="split">
+          <form class="order" id="askForm" onsubmit="return false">
+            <h3>Ask</h3>
+            <p>The seller does not type euros. 100 basis points is 1.00% over the print.</p>
+            <div class="grid-3">
+              <label>MWh <input id="askMwh" inputmode="numeric" value="1" /></label>
+              <label>Markup, bps <input id="askMarkup" inputmode="numeric" value="100" /></label>
+              <label>Partial
+                <select id="askPartial"><option value="no">no</option><option value="yes">yes</option></select>
+              </label>
+            </div>
+            <label>Note <input id="askNote" maxlength="80" value="Indexed offer" /></label>
+            <label>Expiry
+              <select id="askExpiry">
+                <option value="86400" selected>1 day</option>
+                <option value="3600">1 hour</option>
+                <option value="604800">7 days</option>
+                <option value="600">10 minutes</option>
+              </select>
+            </label>
+            <p class="quote" id="askQuote">Pin the print first.</p>
+            <button type="button" class="solid" id="btnAsk">Post ask</button>
+          </form>
+          <form class="order order-bid" id="bidForm" onsubmit="return false">
+            <h3>Bid</h3>
+            <p>The escrow is the contract's quote at your maximum markup, not a number you invent.</p>
+            <div class="grid-3">
+              <label>MWh <input id="bidMwh" inputmode="numeric" value="1" /></label>
+              <label>Max markup, bps <input id="bidMarkup" inputmode="numeric" value="400" /></label>
+              <label>Partial
+                <select id="bidPartial"><option value="no">no</option><option value="yes">yes</option></select>
+              </label>
+            </div>
+            <label>Note <input id="bidNote" maxlength="80" value="Indexed bid" /></label>
+            <label>Expiry
+              <select id="bidExpiry">
+                <option value="86400" selected>1 day</option>
+                <option value="3600">1 hour</option>
+                <option value="604800">7 days</option>
+                <option value="600">10 minutes</option>
+              </select>
+            </label>
+            <p class="quote" id="bidQuote">Pin the print first.</p>
+            <button type="button" class="solid" id="btnBid">Post bid at the contract quote</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="book">
+        <div class="panel-head">
+          <h2>Book</h2>
+          <p id="bookNote">Orders reload from the contract after each accepted transaction.</p>
+        </div>
+        <div class="split">
+          <div>
+            <h3 class="col-title">Asks <span id="askCount">0</span> on this interval</h3>
+            <div id="bookAsks"></div>
+          </div>
+          <div>
+            <h3 class="col-title">Bids <span id="bidCount">0</span> on this interval</h3>
+            <div id="bookBids"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="rail">
+        <div class="panel-head">
+          <h2>Transaction</h2>
+          <p>A lamp on the tape does not move because the form changed. It moves when this receipt is accepted and the book is read back.</p>
+        </div>
+        <ol class="rail">
+          <li data-phase="submitting">Submit</li>
+          <li data-phase="consensus">Consensus</li>
+          <li data-phase="accepted">Accepted</li>
+          <li data-phase="finality">Finalize</li>
+        </ol>
+        <p id="lifeMessage">No transaction yet.</p>
+        <p><a id="txLink" class="text-link" hidden href="">Transaction</a></p>
+        <div class="votes" id="lifeVotes"></div>
+        <dl class="detail" id="lifeDetail"></dl>
+        <div class="row-actions">
+          <button type="button" class="ghost" id="btnRefreshTx">Reload this transaction</button>
+          <button type="button" class="ghost" id="btnAppeal">Appeal</button>
+          <button type="button" class="ghost" id="btnFinalize">Finalize</button>
+        </div>
+        <p class="hint">Appeal and finalize follow the chain's window. The book does not need them in order to clear.</p>
+      </section>
+
+      <section class="panel" id="rules">
+        <div class="panel-head">
+          <h2>What the contract will and will not do</h2>
+          <p>These are the rules in <code>contracts/bandlot.py</code>. The worked numbers are the public DE-LU print for 12 Nov 2026, interval 0, which was 224.90 EUR/MWh.</p>
+        </div>
+        <div class="rule-grid">
+          <article>
+            <h3>The print is fetched</h3>
+            <p>The URL is <code>api.energy-charts.info/price</code> for one zone and one date. Validators fetch it again. A typed euro price is not an argument.</p>
+          </article>
+          <article>
+            <h3>Markup, then floor</h3>
+            <p>224.90 at +100 bps becomes 227.14 EUR/MWh. At +400 bps it becomes 233.89. The remainder is dropped, not rounded up.</p>
+          </article>
+          <article>
+            <h3>Price-time match</h3>
+            <p>Same zone, date, and interval. Seller markup at or under the buyer's cap. Full size unless both sides allow a partial. Lowest markup wins. Ties go to the earlier ask.</p>
+          </article>
+          <article>
+            <h3>Escrow is computed</h3>
+            <p>The buyer attaches the wei <code>quote</code> returns. One euro-cent of indexed notional is 10<sup>12</sup> wei on this book. That scale is not a claim about the price of GEN.</p>
+          </article>
+          <article>
+            <h3>Clear pays, and refunds the rest</h3>
+            <p>A 100 bps ask against a 400 bps bid pays the 227.14 figure and returns the difference. No match, no transfer. The seller cannot take their own bid.</p>
+          </article>
+          <article>
+            <h3>Fail closed</h3>
+            <p>Unreadable, rate-limited, wrong unit, or a series that is not 92, 96, or 100 quarters does not pin. A zero or negative interval cannot be posted. This is not a delivery of electricity.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        Day-ahead figures are read from energy-charts.info. The DE-LU series used in the worked example is published there as CC BY 4.0 from Bundesnetzagentur | SMARD.de.
+        Bandlot stores integer euro-cents and settles a GEN notional. It does not schedule generation.
+      </p>
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
