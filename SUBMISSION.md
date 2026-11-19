@@ -33,19 +33,19 @@ The transaction rail waits for an accepted receipt, shows the votes the chain re
 | GitHub | https://github.com/LIBRAPHILIP/bandlot |
 | Live app | https://bandlot.vercel.app |
 | Network | Studionet, chain 61999 |
-| Contract | `0xfBC7386748Ea1176a3501d11d368430acde28cf6` |
-| Deploy tx | `0xeb34178c7846a7898c95fcf85465597123fd835ee9e3f1d5bc2e3b1fb7bfe4dd` |
-| Explorer | https://explorer-studio.genlayer.com/address/0xfBC7386748Ea1176a3501d11d368430acde28cf6 |
-| Version | `1.0.0-bandlot` |
+| Contract | `0x8CAE3D453B7562FEb5E8A0Cf8eC626743e0D3319` |
+| Deploy tx | `0x149fd95fce07ad44e6a7882e65103cf4eedb2e14d78fabaa37e8c2af869b8244` |
+| Explorer | https://explorer-studio.genlayer.com/address/0x8CAE3D453B7562FEb5E8A0Cf8eC626743e0D3319 |
+| Version | `1.0.1-bandlot` |
 | LLM | not used (`llm_rule=none`) |
 
 Primary tag: **Marketplaces**. Tag 1: **Dynamic Pricing**. Tag 2: **Buyer-Selling Matching**.
 
-`npm run demo:studionet` wrote `deployments/live-check.json` on 13 Nov 2026. DE-LU 2026-11-12 pinned 96 intervals. Interval 0 is 22490 euro-cents per MWh. Ask 0 at +100 bps is FILLED. Bid 0, escrowed at +400 bps from a second account, is CLEARED. Pay is `22714000000000000` wei. Refund is `675000000000000` wei.
+`npm run demo:studionet` wrote `deployments/live-check.json` on 19 Nov 2026 against version `1.0.1-bandlot`. DE-LU 2026-11-12 pinned 96 intervals. Interval 0 is 22490 euro-cents per MWh. Ask 0 at +100 bps is FILLED. Bid 0, escrowed at +400 bps from a second account, is CLEARED. Pay is `22714000000000000` wei. Refund is `675000000000000` wei. Expiry and the clear used `gl.message_raw["datetime"]`.
 
 | Call | Transaction |
 | --- | --- |
-| `pin_print` | `0xd334aa3f1307e27085b4784da977475558ad9e5a2c409ae2813240cee7ad42e3` |
-| `post_ask` | `0x821f2cce97e94aeba09523e2c88f23dda7eb8540b0c222d10cb2fbf4f95ae6a5` |
-| `post_bid` | `0xfcc6d2176755e271b3722d00bd53dc6041359204aa02e03519ba7a5be44ef851` |
-| `clear_bid` | `0x51fc882d9423d79507a9f9bf1defa1763346ee33a5b55c2b589b80b909715301` |
+| `pin_print` | `0x83cb8b66f6842f53a499bfdb9aeaf00db61ff1003fed994b6a5a9dc1624332de` |
+| `post_ask` | `0x143d82ab4b99d5f6fc53d7d8811600bbdb73ef0e8fc9ca81b7735d478e4cee66` |
+| `post_bid` | `0xcfcf0cd9389af181b1dc8399a47ca9f6d2b563087665a703aa8cab4a77a997f5` |
+| `clear_bid` | `0xc94a7dd2342e76041e2b8c5046258f7685237ecb31960c583f7e64cd8cf98152` |

@@ -3,7 +3,7 @@
  * The vectors in tests/rules.node.test.js match tests/test_rules.py.
  */
 
-export const VERSION = "1.0.0-bandlot";
+export const VERSION = "1.0.1-bandlot";
 export const ZONES = ["DE-LU", "AT", "BE", "FR", "NL"];
 export const WEI_PER_EUR_CENT = 10n ** 12n;
 export const MIN_PAY_WEI = 10n ** 15n;

@@ -16,6 +16,7 @@ VERSION = NS["VERSION"]
 source_url = NS["source_url"]
 valid_date = NS["valid_date"]
 civil_to_unix = NS["civil_to_unix"]
+message_unix = NS["message_unix"]
 extract_print = NS["extract_print"]
 print_acceptable = NS["print_acceptable"]
 prints_equivalent = NS["prints_equivalent"]
@@ -95,7 +96,7 @@ def bid(**over):
 
 class PrintTests(unittest.TestCase):
     def test_version_and_calendar(self):
-        self.assertEqual(VERSION, "1.0.0-bandlot")
+        self.assertEqual(VERSION, "1.0.1-bandlot")
         self.assertEqual(civil_to_unix(1970, 1, 1), 0)
         expected = int(datetime.datetime(2026, 11, 12, tzinfo=datetime.timezone.utc).timestamp())
         self.assertEqual(civil_to_unix(2026, 11, 12), expected)
@@ -103,6 +104,18 @@ class PrintTests(unittest.TestCase):
         self.assertFalse(valid_date("2025-02-29"))
         self.assertTrue(valid_date("2024-02-29"))
         self.assertEqual(source_url("DE-LU", "2026-11-12"), URL)
+
+    def test_message_unix_is_calendar_math(self):
+        expected = int(datetime.datetime(2026, 11, 13, 3, 40, 13, tzinfo=datetime.timezone.utc).timestamp())
+        self.assertEqual(message_unix("2026-11-13T03:40:13Z"), expected)
+        self.assertEqual(message_unix("2026-11-13T03:40:13+00:00"), expected)
+        self.assertEqual(message_unix("2026-11-13T03:40:13.759000Z"), expected)
+        self.assertEqual(message_unix("2026-11-13T04:40:13+01:00"), expected)
+        self.assertEqual(message_unix("2026-11-13T02:40:13-0100"), expected)
+        with self.assertRaises(ValueError):
+            message_unix("")
+        with self.assertRaises(ValueError):
+            message_unix("not-a-time")
 
     def test_fixture_pins_the_published_series(self):
         rec = extract_print(FIXTURE, 200, "DE-LU", "2026-11-12", URL)

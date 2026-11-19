@@ -6,7 +6,7 @@ A seller offers a whole number of megawatt-hours on one interval of a bidding zo
 
 The lot is a GEN notional indexed to the published price. Bandlot does not schedule a power plant and does not claim that GEN trades at the euro figure on screen.
 
-The Studionet deployment is `0xfBC7386748Ea1176a3501d11d368430acde28cf6` on chain 61999. The desk binds that address from `src/deployed.json`.
+The Studionet deployment is `0x8CAE3D453B7562FEb5E8A0Cf8eC626743e0D3319` on chain 61999, version `1.0.1-bandlot`. The desk binds that address from `src/deployed.json`. Expiry and settlement use the transaction datetime, not the host clock.
 
 ## The trust problem
 

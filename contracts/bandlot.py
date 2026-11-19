@@ -23,7 +23,6 @@ power plant and it does not claim that one GEN buys one euro.
 from genlayer import *
 
 import json
-import time
 import typing
 
 
@@ -31,7 +30,7 @@ import typing
 import json
 import re
 
-VERSION = "1.0.0-bandlot"
+VERSION = "1.0.1-bandlot"
 ZONES = ("DE-LU", "AT", "BE", "FR", "NL")
 RESOLUTIONS = (92, 96, 100)
 WEI_PER_EUR_CENT = 10**12
@@ -126,6 +125,42 @@ def civil_to_unix(year: int, month: int, day: int) -> int:
     doe = yoe * 365 + yoe // 4 - yoe // 100 + doy
     days = era * 146097 + doe - 719468
     return days * 86400
+
+
+_TX_TIME = re.compile(
+    r"^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(Z|[+-]\d{2}:\d{2}|[+-]\d{4})?$"
+)
+
+
+def message_unix(raw: str) -> int:
+    """Unix seconds from the transaction datetime. No host clock."""
+    match = _TX_TIME.fullmatch(str(raw or "").strip())
+    if not match:
+        raise ValueError("bad_tx_time")
+    year = int(match.group(1))
+    month = int(match.group(2))
+    day = int(match.group(3))
+    hour = int(match.group(4))
+    minute = int(match.group(5))
+    second = int(match.group(6))
+    if year < 1970 or month < 1 or month > 12 or day < 1:
+        raise ValueError("bad_tx_time")
+    lengths = [0, 31, 29 if _leap(year) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    if day > lengths[month] or hour > 23 or minute > 59 or second > 59:
+        raise ValueError("bad_tx_time")
+    stamp = civil_to_unix(year, month, day) + hour * 3600 + minute * 60 + second
+    zone = match.group(7) or "Z"
+    if zone != "Z":
+        sign = 1 if zone[0] == "+" else -1
+        digits = zone[1:].replace(":", "")
+        off_hour = int(digits[0:2])
+        off_minute = int(digits[2:4])
+        if off_hour > 23 or off_minute > 59:
+            raise ValueError("bad_tx_time")
+        stamp -= sign * (off_hour * 3600 + off_minute * 60)
+    if stamp <= 0:
+        raise ValueError("bad_tx_time")
+    return stamp
 
 
 def parse_zone(raw: str) -> str:
@@ -1043,7 +1078,17 @@ class Bandlot(gl.Contract):
 
 
 def _now_ts() -> int:
-    return int(time.time())
+    # gl.message_raw["datetime"] is the transaction timestamp. Every validator
+    # re-executing this message sees the same string. time.time() is the host
+    # clock and is not used on expiry, ordering, or settlement.
+    try:
+        raw = gl.message_raw["datetime"]
+    except Exception:
+        raise Exception("bad_tx_time")
+    try:
+        return message_unix(raw)
+    except ValueError as exc:
+        raise Exception(str(exc))
 
 
 def _fetch_print(zone: str, date: str) -> dict:

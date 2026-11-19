@@ -199,7 +199,7 @@ async function main() {
   );
 
   const evidence = {
-    version: "1.0.0-bandlot",
+    version: "1.0.1-bandlot",
     address: deployed.address,
     chainId: 61999,
     zone: ZONE,

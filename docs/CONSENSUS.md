@@ -2,6 +2,8 @@
 
 Bandlot uses one non-deterministic step: `pin_print`. Every later order and the clear are deterministic reads of that stored print.
 
+Expiry, order time, and settlement read `gl.message_raw["datetime"]`, the transaction timestamp on this runtime. That string is converted with calendar arithmetic. The contract does not call `time.time()`.
+
 ## What validators compare
 
 The leader fetches the contract-built URL and returns a record of strings:

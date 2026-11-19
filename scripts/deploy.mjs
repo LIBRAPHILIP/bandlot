@@ -109,8 +109,8 @@ async function main() {
 
   const meta = parse(await client.readContract({ address, functionName: "get_meta", args: [] }));
   console.log("get_meta:", meta);
-  if (!String(meta?.version || "").includes("1.0.0-bandlot")) {
-    throw new Error("Deployed version is not 1.0.0-bandlot: " + JSON.stringify(meta));
+  if (!String(meta?.version || "").includes("1.0.1-bandlot")) {
+    throw new Error("Deployed version is not 1.0.1-bandlot: " + JSON.stringify(meta));
   }
   if (String(meta?.llm_rule) !== "none") throw new Error("llm_rule is not none");
   if (String(meta?.match_rule) !== "lowest_markup_then_earliest_ask") {
@@ -137,7 +137,7 @@ async function main() {
         : "";
   const payload = {
     primitive: "Bandlot",
-    version: "1.0.0-bandlot",
+    version: "1.0.1-bandlot",
     address,
     chainId: chain.id,
     network: netName,

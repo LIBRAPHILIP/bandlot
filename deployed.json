@@ -1,11 +1,11 @@
 {
   "primitive": "Bandlot",
-  "version": "1.0.0-bandlot",
-  "address": "0xfBC7386748Ea1176a3501d11d368430acde28cf6",
+  "version": "1.0.1-bandlot",
+  "address": "0x8CAE3D453B7562FEb5E8A0Cf8eC626743e0D3319",
   "chainId": 61999,
   "network": "studionet",
-  "deployTx": "0xeb34178c7846a7898c95fcf85465597123fd835ee9e3f1d5bc2e3b1fb7bfe4dd",
-  "explorer": "https://explorer-studio.genlayer.com/address/0xfBC7386748Ea1176a3501d11d368430acde28cf6",
-  "deployedAt": "2026-11-13T03:39:05.627Z",
-  "deployer": "0xfe9eAeD7Cb41A1F0428fFC70DCc79e2389833f0F"
+  "deployTx": "0x149fd95fce07ad44e6a7882e65103cf4eedb2e14d78fabaa37e8c2af869b8244",
+  "explorer": "https://explorer-studio.genlayer.com/address/0x8CAE3D453B7562FEb5E8A0Cf8eC626743e0D3319",
+  "deployedAt": "2026-11-19T02:44:20.141Z",
+  "deployer": "0xc0232C66E2B7BCCcDbD7B6C4F8Db7F654711826d"
 }

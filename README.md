@@ -38,6 +38,6 @@ Studionet, chain 61999. RPC `https://studio.genlayer.com/api`. Explorer `https:/
 
 Live app: https://bandlot.vercel.app
 
-Live contract `0xfBC7386748Ea1176a3501d11d368430acde28cf6`. Deploy transaction `0xeb34178c7846a7898c95fcf85465597123fd835ee9e3f1d5bc2e3b1fb7bfe4dd`.
+Live contract `0x8CAE3D453B7562FEb5E8A0Cf8eC626743e0D3319`, version `1.0.1-bandlot`. Deploy transaction `0x149fd95fce07ad44e6a7882e65103cf4eedb2e14d78fabaa37e8c2af869b8244`.
 
 The recorded clear is in `deployments/live-check.json`. DE-LU 2026-11-12, interval 0, print 224.90 EUR/MWh. Ask 0 at +100 bps is FILLED. Bid 0 from a second account, escrowed at +400 bps, is CLEARED. Pay `22714000000000000` wei, refund `675000000000000` wei.
